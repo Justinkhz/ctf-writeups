@@ -1,4 +1,5 @@
-
 # CTF Writeups
 
-My personal CTF writeups and notes.
+My personal writeups and notes from completed CTFs (TryHackMe, INE, HTB, etc.).
+
+Writeups may include tools, steps, and lessons learned
