@@ -1,5 +1,11 @@
 # CTF Writeups
 
-My personal writeups and notes from SOME of my completed CTFs (TryHackMe, INE, HTB, etc.).
+Personal writeups from some of the CTFs I've completed (TryHackMe, INE, Hack The Box, etc.).
 
-Writeups may include tools, steps, and lessons learned
+Each writeup may include:
+- Tools and techniques used
+- Step-by-step approach
+- Flags captured and how
+- Lessons learned along the way
+
+> For educational use only.
