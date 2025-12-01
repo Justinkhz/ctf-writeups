@@ -16,7 +16,7 @@ This CTF focused on gaining access to a vulnerable web server via a file upload 
 nmap -sS -sV -sC -T4 <IP>
 ~~~
 
-**Explanation:** Performs a TCP SYN scan with service/version detection and default NSE scripts at high speed.
+**Explanation:** Performs a TCP SYN scan (`-sS`), service version detection (`-sV`), and runs default NSE scripts (`-sC`). The `-T4` flag speeds up scanning.
 
 **Result:**
 ~~~
