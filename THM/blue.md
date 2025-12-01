@@ -1,6 +1,6 @@
 # TryHackMe – Blue
 
-**Completed:** *date here*  
+**Completed:** *November 17th, 2025*  
 **Platform:** TryHackMe  
 > ⚠️ This write-up is for educational purposes only. All activity was conducted within legal lab environments.
 
