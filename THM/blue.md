@@ -62,7 +62,10 @@ set RHOSTS <IP>
 run
 ~~~
 
-**Explanation:** Launches the EternalBlue exploit, abusing SMBv1 to obtain SYSTEM-level access.
+**Explanation:** SMBv1 contains a critical memory corruption flaw (MS17-010) in the way it handles specially crafted packets.  
+This vulnerability allows remote code execution **without authentication**, making it possible to gain SYSTEM privileges on unpatched Windows machines.
+
+The Metasploit module automates the exploit process by sending the required malformed SMB packets, triggering the overflow, and delivering a payload that opens a SYSTEM‑level Meterpreter session.
 
 ✅ **Result:** Meterpreter session opened as **NT AUTHORITY\SYSTEM**.
 
@@ -90,9 +93,9 @@ echo "<hashes>" > hash.txt
 john hash.txt --wordlist=rockyou.txt
 ~~~
 
-**Explanation:** Cracks NTLM hashes using John the Ripper and a dictionary attack.
+**Explanation:** Cracks NTLM hashes using John the Ripper and a dictionary attack to recover plaintext passwords.
 
-Recovered plaintext passwords.
+The goal was to access user accounts using the cracked credentials in order to retrieve a flag stored in their directories.
 
 Checked **C:\Users**, **root directories**, and user profile locations to retrieve all available flags.
 
