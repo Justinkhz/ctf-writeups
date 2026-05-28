@@ -8,9 +8,9 @@ This CTF focused on enumerating a Windows machine, identifying an SMB vulnerabil
 
 ---
 
-## 🎯 Target: Windows Server
+## Target: Windows Server
 
-### 🔍 Nmap Scan
+### Nmap Scan
 
 ~~~bash
 nmap -sS -sV -sC -T4 <IP>
@@ -25,7 +25,7 @@ nmap -sS -sV -sC -T4 <IP>
 
 ---
 
-## 📡 SMB Enumeration
+## SMB Enumeration
 
 ~~~bash
 enum4linux -A <IP>
@@ -40,7 +40,7 @@ Findings:
 
 ---
 
-## 🧪 Vulnerability Scan (MS17-010)
+## Vulnerability Scan (MS17-010)
 
 ~~~bash
 nmap --script smb-vuln-ms17-010 -T4 <IP>
@@ -53,7 +53,7 @@ Target confirmed **VULNERABLE** to EternalBlue.
 
 ---
 
-## 💥 EternalBlue Exploitation
+## EternalBlue Exploitation
 
 ~~~bash
 msfconsole
@@ -67,11 +67,11 @@ This vulnerability allows remote code execution **without authentication**, maki
 
 The Metasploit module automates the exploit process by sending the required malformed SMB packets, triggering the overflow, and delivering a payload that opens a SYSTEM‑level Meterpreter session.
 
-✅ **Result:** Meterpreter session opened as **NT AUTHORITY\SYSTEM**.
+**Result:** Meterpreter session opened as **NT AUTHORITY\SYSTEM**.
 
 ---
 
-## 🖥️ Post-Exploitation Enumeration
+## Post-Exploitation Enumeration
 
 Dumped password hashes:
 
@@ -87,7 +87,7 @@ echo "<hashes>" > hash.txt
 
 ---
 
-## 🔐 Hash Cracking
+## Hash Cracking
 
 ~~~bash
 john hash.txt --wordlist=rockyou.txt
@@ -101,7 +101,7 @@ Checked **C:\Users**, **root directories**, and user profile locations to retrie
 
 ---
 
-## 🧠 Summary
+## Summary
 
 | Phase | Key Finding |
 |-------|-------------|
@@ -113,7 +113,7 @@ Checked **C:\Users**, **root directories**, and user profile locations to retrie
 
 ---
 
-## 💡 Lessons Learned
+## Lessons Learned
 
 - SMBv1 is a high-risk protocol and should be disabled  
 - EternalBlue demonstrates the impact of unpatched critical vulnerabilities  
